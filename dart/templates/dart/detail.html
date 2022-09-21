@@ -1,0 +1,15 @@
+<body>
+    <h2>{{ stock_code }}</h2>
+    <ul>
+    {% for amount in amounts %}
+        <div>
+            <li>{{ amount.account_nm_kor }}</li>
+            {{ amount.Q202211013 }}
+            {{ amount.Q202111011 }}
+            {{ amount.Q202111014 }}
+            {{ amount.Q202111012 }}
+        </div>
+    {% endfor %}
+    </ul>
+    {% block content %}{% endblock content %}
+</body>

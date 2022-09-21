@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header>
+        <form method="GET" action="{% url 'dart:search' %}">
+            {{ form }}
+            <button>Search</button>
+        </form>
+    </header>
+    <h2>{{ stock_code }}</h2>
+    <ul>
+    {% for amount in amounts %}
+        <div>
+            <li>{{ amount.account_nm_kor }}</li>
+            {{ amount.Q202211013 }}
+            {{ amount.Q202111011 }}
+            {{ amount.Q202111014 }}
+            {{ amount.Q202111012 }}
+        </div>
+    {% endfor %}
+    </ul>
+    {% block content %}{% endblock content %}
+</body>
+</html>

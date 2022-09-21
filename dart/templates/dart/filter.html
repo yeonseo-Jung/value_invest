@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        {{ quarter_form.as_p }}
+        {{ account_form.as_p }}
+        {{ ratio_form.as_p }}
+        <input type="submit" value="Filter">
+    </form>
+
+    {% comment %} <form method="POST">
+        {% csrf_token %}
+        {{ account_form }}
+        <input type="submit" value="Filter">
+    </form> {% endcomment %}
+    <ul>
+        {% for account, amount in amounts.items %}
+            <div>
+                <li>
+                    {{ account }}
+                    {{ "min amount: " }}
+                    {{ amount.0 }}
+                    {{ "max amount: " }}
+                    {{ amount.1 }}
+                </li>
+            </div>
+        {% endfor %}
+    </ul>
+
+    {% comment %} <form method="POST">
+        {% csrf_token %}
+        {{ ratio_form }}
+        <input type="submit" value="Filter">
+    </form> {% endcomment %}
+    <ul>
+        {% for ratio, ratio_val in ratios.items %}
+            <div>
+                <li>
+                    {{ ratio }}
+                    {{ "min ratio: " }}
+                    {{ ratio_val.0 }}
+                    {{ "max ratio: " }}
+                    {{ ratio_val.1 }}
+                </li>
+            </div>
+        {% endfor %}
+    </ul>
+    <form method="GET">
+        {% csrf_token %}
+        <input type="submit" value="Reset">
+    </form>
+    <h3>Filtered Stock Codes</h3>
+    <ul>
+        {% for stock_code in stock_codes %}
+        <div>
+            <li>
+                <a href="/dart/{{ stock_code }}" target="blank">{{ stock_code }}</a>
+            </li>
+        </div>
+        {% endfor %}
+    </ul>    
+    {% block content %}{% endblock content %}
+</body>
+</html>
