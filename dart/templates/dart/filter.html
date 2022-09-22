@@ -51,10 +51,11 @@
             </div>
         {% endfor %}
     </ul>
-    <form method="GET">
+    <form method="POST">
         {% csrf_token %}
         <input type="submit" value="Reset">
     </form>
+
     <h3>Filtered Stock Codes</h3>
     <ul>
         {% for stock_code in stock_codes %}

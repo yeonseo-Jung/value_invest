@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponse
 
 from .models import Amounts
@@ -66,11 +66,12 @@ class FilterView:
         context = {
             'quarter_form': quarter_form,
             'account_form': account_form,
-            'ratio_form': ratio_form
+            'ratio_form': ratio_form,
         }
         
         if request.POST:
             print('\n\n', request.POST, '\n\n')
+            req_post_dict = request.POST.dict()
             
             # quarters
             if quarter_form.is_valid():
@@ -82,49 +83,43 @@ class FilterView:
                     quarters.append(quarter)
                 
                 self.dartf.quarters = quarters
-                            
-            account_idx = request.POST["account_field"]
-            account = account_form.accounts_dict[account_idx]
-            min_amount = request.POST["min_amount"].strip()
-            max_amount = request.POST["max_amount"].strip()
-            # status check
-            min_amount, max_amount, status = self.preprocessor(min_amount, max_amount)
-            if status:
-                # filtering accounts amounts
-                self.dartf.amounts[account] = [min_amount, max_amount]
-                self.dartf.filter_amounts()
-            else:
-                pass
+            
+            # accounts
+            if 'account_field' in req_post_dict.keys():
+                account_idx = request.POST["account_field"]
+                account = account_form.accounts_dict[account_idx]
+                min_amount = request.POST["min_amount"].strip()
+                max_amount = request.POST["max_amount"].strip()
+                
+                # status check
+                min_amount, max_amount, status = self.preprocessor(min_amount, max_amount)
+                if status:
+                    # filtering accounts amounts
+                    self.dartf.amounts[account] = [min_amount, max_amount]
+                    self.dartf.filter_amounts()
+                else:
+                    pass
                 
             # ratios
-            ratio_idx = request.POST["ratio_field"]
-            ratio = ratio_form.ratios_dict[ratio_idx]
-            min_ratio = request.POST["min_ratio"].strip()
-            max_ratio = request.POST["max_ratio"].strip()
-            
-            # status check
-            min_ratio, max_ratio, status = self.preprocessor(min_ratio, max_ratio)
-            if status:
-                # filtering ratios
-                self.dartf.ratios[ratio] = [min_ratio, max_ratio]
-                self.dartf.filter_ratios()
-            else:
-                pass
-
-            # context data
-            context['amounts'] = self.dartf.amounts
-            context['ratios'] = self.dartf.ratios
-            
-            # intersect stock codes
-            self.dartf.intersect()
-            stock_codes_filterd = self.dartf.codes_filtered
-            context['stock_codes'] = stock_codes_filterd
-            
-        elif request.GET:
-            
+            if 'ratio_field' in req_post_dict.keys():
+                ratio_idx = request.POST["ratio_field"]
+                ratio = ratio_form.ratios_dict[ratio_idx]
+                min_ratio = request.POST["min_ratio"].strip()
+                max_ratio = request.POST["max_ratio"].strip()
+                
+                # status check
+                min_ratio, max_ratio, status = self.preprocessor(min_ratio, max_ratio)
+                if status:
+                    # filtering ratios
+                    self.dartf.ratios[ratio] = [min_ratio, max_ratio]
+                    self.dartf.filter_ratios()
+                else:
+                    pass
+                
             # init filter
-            self.init_filter()
-            
+            if len(req_post_dict.keys()) <= 2:
+                self.init_filter()
+
             # context data
             context['amounts'] = self.dartf.amounts
             context['ratios'] = self.dartf.ratios

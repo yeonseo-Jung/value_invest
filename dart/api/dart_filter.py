@@ -8,18 +8,21 @@ from .database import AccessDataBase
 db = AccessDataBase('root', 'jys1013011!', 'dart')
 class Filter:
     def __init__(self):
+        self.init_tbl()
         self.init_amounts()
         self.init_ratios()
         self.init_codes()
         self.init_quarters()
         
+    def init_tbl(self):
+        self.dart_amounts = db.get_tbl('dart_amounts')
+        self.dart_ratios = db.get_tbl('dart_ratios')
+        
     def init_amounts(self):
         self.amounts = {}
-        self.dart_amounts = db.get_tbl('dart_amounts')
     
     def init_ratios(self):
         self.ratios = {}
-        self.dart_ratios = db.get_tbl('dart_ratios')
         
     def init_codes(self):
         self.codes_amount = None
