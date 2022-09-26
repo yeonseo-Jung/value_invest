@@ -57,6 +57,8 @@ class FilterView:
         self.dartf.init_codes()
     
     def _filter(self, request):
+        ''' filter view function '''
+        
         # Form
         quarter_form = QuarterFilterForm(request.POST or None)
         account_form = AccountFilterForm(None)
@@ -84,40 +86,40 @@ class FilterView:
                 
                 self.dartf.quarters = quarters
             
-            # accounts
-            if 'account_field' in req_post_dict.keys():
-                account_idx = request.POST["account_field"]
-                account = account_form.accounts_dict[account_idx]
-                min_amount = request.POST["min_amount"].strip()
-                max_amount = request.POST["max_amount"].strip()
-                
-                # status check
-                min_amount, max_amount, status = self.preprocessor(min_amount, max_amount)
-                if status:
-                    # filtering accounts amounts
-                    self.dartf.amounts[account] = [min_amount, max_amount]
-                    self.dartf.filter_amounts()
-                else:
-                    pass
-                
-            # ratios
-            if 'ratio_field' in req_post_dict.keys():
-                ratio_idx = request.POST["ratio_field"]
-                ratio = ratio_form.ratios_dict[ratio_idx]
-                min_ratio = request.POST["min_ratio"].strip()
-                max_ratio = request.POST["max_ratio"].strip()
-                
-                # status check
-                min_ratio, max_ratio, status = self.preprocessor(min_ratio, max_ratio)
-                if status:
-                    # filtering ratios
-                    self.dartf.ratios[ratio] = [min_ratio, max_ratio]
-                    self.dartf.filter_ratios()
-                else:
-                    pass
+                # accounts
+                if 'account_field' in req_post_dict.keys():
+                    account_idx = request.POST["account_field"]
+                    account = account_form.accounts_dict[account_idx]
+                    min_amount = request.POST["min_amount"].strip()
+                    max_amount = request.POST["max_amount"].strip()
+                    
+                    # status check
+                    min_amount, max_amount, status = self.preprocessor(min_amount, max_amount)
+                    if status:
+                        # filtering accounts amounts
+                        self.dartf.amounts[account] = [min_amount, max_amount]
+                        self.dartf.filter_amounts()
+                    else:
+                        pass
+                    
+                # ratios
+                if 'ratio_field' in req_post_dict.keys():
+                    ratio_idx = request.POST["ratio_field"]
+                    ratio = ratio_form.ratios_dict[ratio_idx]
+                    min_ratio = request.POST["min_ratio"].strip()
+                    max_ratio = request.POST["max_ratio"].strip()
+                    
+                    # status check
+                    min_ratio, max_ratio, status = self.preprocessor(min_ratio, max_ratio)
+                    if status:
+                        # filtering ratios
+                        self.dartf.ratios[ratio] = [min_ratio, max_ratio]
+                        self.dartf.filter_ratios()
+                    else:
+                        pass
                 
             # init filter
-            if len(req_post_dict.keys()) <= 2:
+            if len(req_post_dict.keys()) == 1:
                 self.init_filter()
 
             # context data
@@ -135,6 +137,7 @@ class FilterView:
         ''' min max amount preprocess '''
         
         if min_amount == '' and max_amount == '':
+            min_amount, max_amount = None, None
             status = False
         elif min_amount == '':
             min_amount = None
