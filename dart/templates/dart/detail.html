@@ -1,5 +1,37 @@
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+    <style type="text/css">
+    table.dataframe th {
+          background-color: #EA6153 !important;
+          color: white !important;
+          text-align:center !important;
+          padding: 5px 15px;
+          font-size:9pt !important;
+    }
+    table.dataframe td {
+        color: black !important;
+        text-align:center !important;
+        padding: 5px 15px;
+        font-size:9pt !important;
+    }
+    
+    table.dataframe tr {
+        background-color: #FFFFFF !important;
+    }
+    
+    table.dataframe tr:nth-child(odd) {
+        background-color: #E9E9E9 !important;
+    }
+    </style>        
+    
     <h2>{{ stock_code }}</h2>
+    <div id="amounts" style="display:none">{{ amounts_ }}</div>
+    {% comment %} <div id="amounts">{{ amounts }}</div> {% endcomment %}
+    <div id="amounts_table" style="margin-top:3px"></div>
     <ul>
     {% for amount in amounts %}
         <div>
@@ -11,5 +43,17 @@
         </div>
     {% endfor %}
     </ul>
-    {% block content %}{% endblock content %}
-</body>
+
+
+    <py-env>
+        - pandas
+    </py-env>
+    <py-script>
+        import pandas as pd
+        
+        amounts = eval(Element("amounts").element.innerHTML)
+        df = pd.DataFrame(amounts)
+        tbl = Element('amounts_table')
+        tbl.write(df)
+    </py-script>
+{% endblock content %}

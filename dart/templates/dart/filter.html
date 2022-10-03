@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
     <form method="POST">
         {% csrf_token %}
         {{ quarter_form.as_p }}
@@ -13,12 +8,6 @@
         {{ ratio_form.as_p }}
         <input type="submit" value="Filter">
     </form>
-
-    {% comment %} <form method="POST">
-        {% csrf_token %}
-        {{ account_form }}
-        <input type="submit" value="Filter">
-    </form> {% endcomment %}
     <ul>
         {% for account, amount in amounts.items %}
             <div>
@@ -32,12 +21,6 @@
             </div>
         {% endfor %}
     </ul>
-
-    {% comment %} <form method="POST">
-        {% csrf_token %}
-        {{ ratio_form }}
-        <input type="submit" value="Filter">
-    </form> {% endcomment %}
     <ul>
         {% for ratio, ratio_val in ratios.items %}
             <div>
@@ -66,6 +49,4 @@
         </div>
         {% endfor %}
     </ul>    
-    {% block content %}{% endblock content %}
-</body>
-</html>
+{% endblock %}

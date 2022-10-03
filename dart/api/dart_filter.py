@@ -90,6 +90,8 @@ class Filter:
         print(f'Filtered stock codes (ratios): {len(self.codes_ratio)}')
         
     def intersect(self):
+        ''' get intersect group '''
+        
         if self.codes_amount is None and self.codes_ratio is None:
             # require msg box
             self.codes_filtered = []
