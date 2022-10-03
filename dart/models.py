@@ -1,18 +1,8 @@
 from django.db import models
 
-# class Finstatements(models.Model):
-#     rcept_no = models.CharField(max_length=20)
-#     reprt_code = models.CharField(max_length=20)
-#     corp_code = models.CharField(max_length=20)
-#     bsns_year = models.CharField(max_length=20)
-#     fs_div = models.CharField(max_length=20)
-#     sj_div = models.CharField(max_length=20)
-#     sj_nm = models.CharField(max_length=20)
-#     stock_code = models.CharField(max_length=20)
-#     account_id = models.CharField(max_length=255)
-#     account_nm = models.CharField(max_length=255)
-#     thstrm_nm = models.CharField(max_length=20)
-#     thstrm_amount = models.FloatField(null=True, blank=True, default=None)
+class Stocks(models.Model):
+    stock_code = models.CharField(max_length=20)
+    stock_name = models.CharField(max_length=255)
 
 class Amounts(models.Model):
     # id = models.AutoField(primary_key=True)

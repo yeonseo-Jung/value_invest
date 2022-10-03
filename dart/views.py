@@ -39,10 +39,14 @@ def detail(request, stock_code):
     except Amounts.DoesNotExist:
         raise Http404("Amounts does not exist")
     
+    # Test
+    amounts_ = str(list(amounts.values()))
+    
     print('\n\n', (amounts), '\n\n')
     context = {
         'stock_code': stock_code,
         'amounts': amounts,
+        'amounts_': amounts_,
     }
     return render(request, 'dart/detail.html', context)
 
