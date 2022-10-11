@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+    <style type="text/css">
+    table.dataframe th {
+          background-color: #EA6153 !important;
+          color: white !important;
+          text-align:center !important;
+          padding: 5px 15px;
+          font-size:9pt !important;
+    }
+    table.dataframe td {
+        color: black !important;
+        text-align:center !important;
+        padding: 5px 15px;
+        font-size:9pt !important;
+    }
+    
+    table.dataframe tr {
+        background-color: #FFFFFF !important;
+    }
+    
+    table.dataframe tr:nth-child(odd) {
+        background-color: #E9E9E9 !important;
+    }
+    </style>        
+    
+    <h3>{{ stock_code }}</h3>
+    <h3>{{ stock_name }}</h3>
+    <div id="amounts" style="display:none">{{ amounts }}</div>
+    <div id="amounts_table" style="margin-top:3px"></div>
+
+
+    <py-env>
+        - pandas
+    </py-env>
+    <py-script>
+        import pandas as pd
+        
+        amounts = eval(Element("amounts").element.innerHTML)
+        df = pd.DataFrame(amounts)
+        drop_columns = ['id', 'account_nm_eng', 'account_id', 'stock_code', 'fs_div']
+        df = df.drop(columns=drop_columns).rename(columns={'account_nm_kor': 'Account'})
+        tbl = Element('amounts_table')
+        tbl.write(df)
+    </py-script>
+{% endblock content %}
