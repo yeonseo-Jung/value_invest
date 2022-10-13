@@ -3,6 +3,16 @@ from django.db import models
 class Stocks(models.Model):
     stock_code = models.CharField(max_length=20)
     stock_name = models.CharField(max_length=255)
+    market = models.CharField(max_length=20, null=False, default='')
+    close = models.FloatField(null=True, blank=True, default=None)
+    open = models.FloatField(null=True, blank=True, default=None)
+    high = models.FloatField(null=True, blank=True, default=None)
+    low = models.FloatField(null=True, blank=True, default=None)
+    volume = models.FloatField(null=True, blank=True, default=None)
+    amounts = models.FloatField(null=True, blank=True, default=None)
+    market_cap = models.FloatField(null=True, blank=True, default=None)
+    shares = models.FloatField(null=True, blank=True, default=None)
+    updated = models.DateTimeField(auto_now=True, null=True)
 
 class Amounts(models.Model):
     # id = models.AutoField(primary_key=True)
