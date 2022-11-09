@@ -2,13 +2,14 @@ from django.http import Http404
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Amounts, Stocks
-from .serializers import StocksSerializer
-from .forms import SearchForm, AccountFilterForm, QuarterFilterForm, RatioFilterForm
-from .api.dart_filter import Filter
+from ..models import Amounts, Stocks
+from ..serializers import StocksSerializer
+from ..forms import SearchForm, AccountFilterForm, QuarterFilterForm, RatioFilterForm
+from ..api.dart_filter import Filter
 
 def index(request):
-  return render(request, "index.html")
+    # Test index.html
+    return render(request, "index.html")
 
 def search(request):
     form = SearchForm()
@@ -75,11 +76,15 @@ class FilterView:
 
     def __init__(self):
         self.dartf = Filter()
+        self.init_filter()
         
     def init_filter(self):
+        self.dartf.init_quarters()
         self.dartf.init_amounts()
         self.dartf.init_ratios()
         self.dartf.init_codes()
+        
+        self.context = {}
     
     def _filter(self, request):
         ''' filter view function '''
@@ -143,9 +148,9 @@ class FilterView:
                     else:
                         pass
                 
-            # init filter
-            if len(req_post_dict.keys()) == 1:
-                self.init_filter()
+            # # init filter
+            # if len(req_post_dict.keys()) == 1:
+            #     self.init_filter()
 
             # context data
             context['amounts'] = self.dartf.amounts
@@ -157,7 +162,10 @@ class FilterView:
             stocks = Stocks.objects.filter(stock_code__in=stock_codes_filterd)
             context['stock_codes'] = stock_codes_filterd
             context['stocks'] = stocks
-        
+            
+        elif request.GET:
+            self.init_filter()
+            
         return render(request, 'dart/filter.html', context)
 
     def preprocessor(self, min_amount, max_amount):
