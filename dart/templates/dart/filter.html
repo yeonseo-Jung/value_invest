@@ -1,14 +1,81 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
-    <form method="POST">
+    <style>
+        h3 {
+            padding: 14px 20px;
+        }
+        .quarters:after { clear: both; display: block; content: '' }
+        .quarters {
+            float: left;
+            width: 200px;
+            height: 450px;
+            position: relative;
+            padding: 10px 20px;
+            /* border: 2px solid #09c; */
+            text-align: left;
+        }
+        ._filter:after { clear: both; display: block; content: '' }
+        ._filter {
+            float: left;
+            width: 250px;
+            height: 450px;
+            position: relative;
+            top: 0px;
+            left: 0px;
+            padding: 10px 20px;
+            /* border: 2px solid #09c; */
+            text-align: left;
+        }
+        .filtered:after { clear: both; display: block; content: '' }
+        .filtered {
+            float: left;
+            width: 600px;
+            position: relative;
+            top: 0px;
+            left: 0px;
+            padding: 10px 20px;
+            /* border: 2px solid #09c; */
+            text-align: left;
+        }
+        .button:after { clear: both; display: block; content: '' }
+        .button {
+            float: left;
+            width: 600px;
+            position: relative;
+            top: 0px;
+            left: 0px;
+            padding: 10px 20px;
+            /* border: 2px solid #09c; */
+            text-align: left;
+        }
+    </style>
+    
+    <h3>Stock Filter</h3>
+    <form method="POST" autocomplete="off">
         {% csrf_token %}
-        {{ quarter_form.as_p }}
-        {{ account_form.as_p }}
-        {{ ratio_form.as_p }}
-        <input type="submit" value="Filter">
+        <div class="quarters">
+            {% for quarter in quarter_form %}
+                <div class="quarter_box">{{ quarter }}</div>
+            {% endfor %}
+        </div>
+        <div class="_filter">
+            {{ account_form.as_p }}
+            {{ ratio_form.as_p }}
+        </div>
+        <!--<div class="button" id="button_filter" style="display: flex; padding: 14px 7px;/">-->
+        <div class="button" id="button_filter">
+            <input type="submit" value="Filter">
+        </div>
     </form>
-    <ul>
+    <form method="GET">
+        {% csrf_token %}
+        <!--<div class="button" id="button_reset" style="display: flex; padding: 14px 7px;/">-->
+        <div class="button" id="button_reset">
+            <input type="submit" value="Reset">
+        </div>
+    </form>
+    <div class="filtered">
         {% for account, amount in amounts.items %}
             <div>
                 <li>
@@ -20,8 +87,6 @@
                 </li>
             </div>
         {% endfor %}
-    </ul>
-    <ul>
         {% for ratio, ratio_val in ratios.items %}
             <div>
                 <li>
@@ -33,20 +98,13 @@
                 </li>
             </div>
         {% endfor %}
-    </ul>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="submit" value="Reset">
-    </form>
-
-    <h3>Filtered Stock Codes</h3>
-    <ul>
+    </div>
+    <div class="filtered">
+        <h4>Filtered Stock Codes</h4>
         {% for stock_code in stock_codes %}
-        <div>
-            <li>
+            <p>
                 <a href="/dart/{{ stock_code }}" target="blank">{{ stock_code }}</a>
-            </li>
-        </div>
+            </p>
         {% endfor %}
-    </ul>    
+    </div>    
 {% endblock %}
