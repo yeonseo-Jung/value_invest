@@ -104,7 +104,7 @@ class Filter:
         else:
             stock_codes = self.codes_amount + self.codes_ratio
             self.codes_filtered = [item for item, count in collections.Counter(stock_codes).items() if count == 2]
-        print(f'Filtered stock codes (intersect): {len(self.codes_filtered)}')
+        print(f'Quarters: {self.quarters}\nFiltered stock codes (intersect): {len(self.codes_filtered)}')
     
     def conv_str(self, string):
         status = True
