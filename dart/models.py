@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
+from django.utils.translation import gettext_lazy as _
+from .managers import CustomUserManager
 
 class Stocks(models.Model):
     stock_code = models.CharField(max_length=20)
@@ -77,3 +80,19 @@ class Ratios(models.Model):
     Q201811014 = models.FloatField(null=True, blank=True, default=None)
     Q201811012 = models.FloatField(null=True, blank=True, default=None)
     Q201811013 = models.FloatField(null=True, blank=True, default=None)
+class User(AbstractBaseUser):
+    
+    username = None
+    email = models.EmailField(_('email address'), unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
+    spouse_name = models.CharField(blank=True, max_length=100)
+    date_of_birth = models.DateField(blank=True, null=True)
+    
+
+    def __str__(self):
+        return self.email

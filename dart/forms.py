@@ -6,8 +6,6 @@ db_dart = AccessDataBase('root', 'jys1013011!', 'dart')
 
 class SearchForm(forms.Form):
     stock_code = forms.CharField()
-
-# YEARS = ('Y202111011', 'Y202011011', 'Y201911011', 'Y201811011')
     
 class QuarterFilterForm(forms.Form):
     quarters = [

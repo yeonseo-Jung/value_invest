@@ -3,3 +3,4 @@ from .models import Amounts, Accounts
 
 admin.site.register(Amounts)
 admin.site.register(Accounts)
+# admin.site.register(User)
